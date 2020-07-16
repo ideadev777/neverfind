@@ -28,7 +28,8 @@
           <div class="carousel-item-b">
             <div class="card-box-a card-shadow">
               <div class="img-box-a">
-                <img src="{{URL::asset('images')}}/{{$service->image_path}}" alt="" class="img-a img-fluid">
+                <img src="{{URL::asset('images')}}/{{$service->image_path}}" alt="" class="img-a img-fluid"
+                style="height:300px;" >
               </div>
               <div class="card-overlay">
                 <div class="card-overlay-a-content">
@@ -45,7 +46,10 @@
                 </div>
               </div>
             </div>
-            <p>{{$service->summary}}</p>
+            <br>
+            <div class="curtail-text">
+             <span>{{$service->summary}}</span>
+            </div>
           </div>
           @endforeach
 

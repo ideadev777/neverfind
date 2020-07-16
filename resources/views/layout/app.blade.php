@@ -26,6 +26,7 @@
 
   <!-- Template Main CSS File -->
   <link href="{{URL::asset('assets/css/style.css')}}" rel="stylesheet">
+  <link href="{{URL::asset('custom/tomstyle.css')}}" rel="stylesheet">
 
   <!-- =======================================================
   * Template Name: EstateAgency - v2.1.0
@@ -47,7 +48,10 @@
       </button>
       <a class="navbar-brand text-brand" href="/">Cleaning &nbsp;<span class="color-b">Service</span></a>
       <div class="navbar-collapse collapse justify-content-center" id="navbarDefault">
-        <ul class="navbar-nav">
+
+      <ul class="navbar-nav mr-auto">
+      </ul>        
+      <ul class="navbar-nav">
           <li class="nav-item">
 <!--            <a class="nav-link active" href="/">Home</a> -->
             <a class="nav-link" href="/">Home</a>
