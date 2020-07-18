@@ -10,6 +10,7 @@ use Illuminate\Routing\Controller as BaseController;
 use DB;
 use Illuminate\Http\Request;
 use Carbon\Carbon ;
+use App\Order ;
 class OrderController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
@@ -31,30 +32,22 @@ class OrderController extends BaseController
 	}   
 	public function postOrder(Request $req)
 	{
-		$mail = $req->input('email') ;
-		$service_id = $req->input('service-type') ;
-		$name = $req->input('name') ;
-		$address = $req->input('address') ;
-		$mobile = $req->input('mobile-number') ;
-		$pay = $req->input('pay-email') ;
-		$start_date = $req->input('startDay') ;
-		$end_date = $req->input('endDay') ;
-		$start_time = $req->input('startTime') ;
-		$end_time = $req->input('endTime') ;
-		$data=array(
-			'service_id' => $service_id,
-			'name' => $name, 
-			'status'=>'0',
-			'email'=>$mail,
-			'address'=>$address,
-			'mobile_number' => $mobile,
-			'pay_email' => $pay,
-			'start_date' => Carbon::parse($start_date),
-			'end_date' => Carbon::parse($end_date),
-			'start_time' => $start_time,
-			'end_time' => $end_time
-		);
-		DB::table('orders')->insert($data) ;
+		
+		$new_order = new Order ;
+		$new_order->service_id = $req->input('service-type'); 
+		$new_order->name = $req->input('name') ;
+		$new_order->status = '0' ;
+		$new_order->email = $req->input('email') ;
+		$new_order->address = $req->input('address') ;
+		$new_order->mobile_number = $req->input('mobile-number')  ;
+		$new_order->pay_email = $req->input('pay-email')  ;
+		$new_order->start_date = Carbon::parse($req->input('startDay')) ;
+		$new_order->end_date = Carbon::parse($req->input('endDay')) ;
+		$new_order->start_time = $req->input('startTime') ;
+		$new_order->end_time = $req->input('endTime') ;
+		$new_order->save() ;
+
+//		DB::table('orders')->insert($data) ;
 		return redirect()->back()->with('success', 1 );
 	}
 	public function delete($id)

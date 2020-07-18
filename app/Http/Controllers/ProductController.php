@@ -7,7 +7,7 @@ use App\Order;
 use Illuminate\Http\Request;
 use Redirect,Response;
 use DB ;
-
+use Mail;
 class ProductController extends Controller
 {
 /**
@@ -34,6 +34,14 @@ public function store(Request $request)
     $affected = DB::table('orders')
               ->where('id', $productId)
               ->update(['status' => $request->status]);
+    $detail = DB::select('select * from orders where id='.$productId);
+    $mail = DB::select('select * from mailtemplate where status='.$request->status);
+    Mail::raw($mail[0]->content, function($message) use($detail,$mail)
+    {
+        $message->subject($mail[0]->header);
+        $message->from('no-reply@website_name.com', 'Cleaning Service');
+        $message->to($detail[0]->email);
+    });
     return Response::json($affected);
 }
   
