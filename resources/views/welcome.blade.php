@@ -1,4 +1,11 @@
 @extends('layout/app')
+<link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+<link href="{{URL::asset('assets/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+
+<script src="{{URL::asset('js/jquery-3.3.1.slim.min.js')}}" ></script>
+<script src="{{URL::asset('js/popper.min.js')}}" ></script>
+<script src="{{URL::asset('js/bootstrap.min.js')}}" ></script>
+<script src="{{URL::asset('custom/calendar.js')}}" type="text/javascript"></script>
 
 @section('title', 'Home')
 
@@ -29,7 +36,7 @@
             <div class="card-box-a card-shadow">
               <div class="img-box-a">
                 <img src="{{URL::asset('images')}}/{{$service->image_path}}" alt="" class="img-a img-fluid"
-                style="height:300px;" >
+                width="100%" >
               </div>
               <div class="card-overlay">
                 <div class="card-overlay-a-content">
@@ -39,7 +46,9 @@
                     </h2>
                   </div>
                   <div class="card-body-a">
-                    <a data-toggle="modal" href="#myModal" class="link-a">Click here to order
+
+
+                    <a href="#"  style="color:white" data-val="{{$service->id}}" data-name="{{$service->name}}" data-toggle="modal" data-target="#order-modal" > Click here to order
                       <span class="ion-ios-arrow-forward"></span>
                     </a>
                   </div>
@@ -177,6 +186,153 @@
   <!-- The Modal -->
 @endsection
 
-<!--
-  class="summary-thumbnail-image loaded" data-parent-ratio="0.7" style="left: -2.84217e-14px; top: -28.3173px; width: 341px; height: 511.635px; position: absolute;" alt="Home" data-image-resolution="500w" 
--->
+<div class="modal fade" id="order-modal" tabindex="-1" role="dialog" aria-labelledby="my-modal" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">My Modal</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <div class="row">
+        <div class="col-md-12 order-md-1">
+          <h4 class="mb-3">Your information</h4>
+          <form action = "order" method = "POST" class="needs-validation" novalidate>
+            @csrf
+            <input type="text" class="service-id" name="service-type" class="mb-3" hidden>
+
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="firstName">Name</label>
+                <input type="text" class="form-control" name="name" placeholder="" required maxlength="30">
+                <div class="invalid-feedback">
+                  Valid name is required.
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" name="email" placeholder="you@example.com" required maxlength="30">
+                <div class="invalid-feedback">
+                  Please enter a valid email address for shipping updates.
+                </div>
+              </div>
+            </div>
+          
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                  <label for="cc-number">Mobile number</label>
+                  <input type="text" class="form-control" name="mobile-number" placeholder="" required maxlength="20">
+                  <div class="invalid-feedback">
+                    Mobile Number is required
+                  </div>
+                </div>
+              <div class="col-md-8 mb-3">
+                <label for="address">Address</label>
+                <input type="text" class="form-control" name="address" placeholder="1234 Main St" required maxlength="40">
+                <div class="invalid-feedback">
+                  Please enter your address.
+                </div>
+              </div>
+            </div>
+
+            <hr class="mb-4">
+
+            <div class="row">
+              <div class="col-md-3 mb-3">
+                <label>Start Date</label>
+                <input id="startDate" name = "startDay" maxlength="20" required/>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label>End Date</label>
+                <input id="endDate" name = "endDay" required maxlength="20"/>
+              </div>
+              <div class ="col-md-3 mb-3">
+                <label>Start Time</label>
+                <input id="starttimepicker" required name = "startTime" maxlength="10"/>
+              </div>
+              <div class ="col-md-3 mb-3">
+                <label>End Time</label>
+                <input id="endtimepicker" name = "endTime" required maxlength="10"/>
+              </div>
+            </div>
+
+            <hr class="mb-4">
+            <h4 class="mb-3">Payment Info</h4>
+            <div class="mb-3">
+              <label for="email">Email</label>
+              <input type="email" class="form-control" name="pay-email" placeholder="you@example.com" required maxlength="20">
+              <div class="invalid-feedback">
+                Please enter a valid email address of paypal account.
+              </div>
+            </div>
+            <hr class="mb-4">
+            <button class="btn btn-primary btn-lg btn-block" type="submit" >Order</button>
+          </form>
+        </div>
+      </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+    
+  </div>
+</div>
+<!-- jQuery, Popper and Bootstrap JS -->
+
+<script>
+      (function() {
+        'use strict';
+
+        window.addEventListener('load', function() {
+          // Fetch all the forms we want to apply custom Bootstrap validation styles to
+          var forms = document.getElementsByClassName('needs-validation');
+
+          // Loop over them and prevent submission
+          var validation = Array.prototype.filter.call(forms, function(form) {
+            form.addEventListener('submit', function(event) {
+              if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+              }
+              form.classList.add('was-validated');
+            }, false);
+          });
+        }, false);
+      })();
+
+
+
+$('#order-modal').on('show.bs.modal', function (event) {
+  var name = $(event.relatedTarget).data('name');
+  var id = $(event.relatedTarget).data('val');
+  $(this).find(".modal-title").text('Order | '+name);
+  $(this).find(".service-id").val(id);
+});
+</script>
+
+<script>
+  $('#endtimepicker').timepicker();
+  $('#starttimepicker').timepicker();
+</script>
+<script>
+        var today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+        $('#startDate').datepicker({
+            uiLibrary: 'bootstrap4',
+            iconsLibrary: 'fontawesome',
+            minDate: today,
+            maxDate: function () {
+                return $('#endDate').val();
+            }
+        });
+        $('#endDate').datepicker({
+            uiLibrary: 'bootstrap4',
+            iconsLibrary: 'fontawesome',
+            minDate: function () {
+                return $('#startDate').val();
+            }
+        });
+</script>

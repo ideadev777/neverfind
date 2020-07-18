@@ -1,124 +1,105 @@
 
+<link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+
+<link href="{{URL::asset('custom/gijgo.min.css')}}" rel="stylesheet" type="text/css" />
+<link href="{{URL::asset('assets/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+
+<script src="{{URL::asset('js/jquery-3.3.1.slim.min.js')}}" ></script>
+<script src="{{URL::asset('js/popper.min.js')}}" ></script>
+<script src="{{URL::asset('js/bootstrap.min.js')}}" ></script>
+<script src="{{URL::asset('custom/calendar.js')}}" type="text/javascript"></script>
+
 <!DOCTYPE html>
   
 <html lang="en">
 <head>
 <!-- CSRF Token -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-
-
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<title>Admin </title>
-<meta name="csrf-token" content="{{ csrf_token() }}">
+<title>Laravel DataTable Ajax Crud Tutorial - Tuts Make</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
 <link  href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>  
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
 <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-
-
-<!--
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
--->
-        <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
-        <!-- Font Awesome icons (free version)-->
-        <script src="https://use.fontawesome.com/releases/v5.13.0/js/all.js" crossorigin="anonymous"></script>
-        <!-- Google fonts-->
-        <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:500,700" rel="stylesheet" type="text/css" />
-        <link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet" type="text/css" />
-        <link href="css/styles.css" rel="stylesheet" />
-    <link rel="stylesheet" type="text/css" href="{{URL::asset('custom/resume.css')}}">
-
-
-
 </head>
 <body>
-
-
-          <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
-            <a class="navbar-brand js-scroll-trigger" href="#page-top">
-                <span class="d-block d-lg-none">Cleaning Service | Admin</span>
-                <span class="d-none d-lg-block"><img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="{{URL::asset('images/admin_avatar.png')}}" alt="" /></span>
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/admin/orderlist">Order List</a></li>
-                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/admin/logout">Log out</a></li>
-                </ul>
-            </div>
-        </nav>
-        <!-- Page Content-->
-        <div class="container-fluid p-0">
-           
-           
-
-
-
-<section id="data-list-view" class="data-list-view-header">
+  
 <div class="container">
+<h2>Laravel DataTable Ajax Crud Tutorial - <a href="https://www.tutsmake.com" target="_blank">TutsMake</a></h2>
 <br>
-<br>
-<h2> Order List </h2>
+<a href="https://www.tutsmake.com/how-to-install-yajra-datatables-in-laravel/" class="btn btn-secondary">Back to Post</a>
+<a href="javascript:void(0)" class="btn btn-info ml-3" id="create-new-product">Add New</a>
+<br><br>
+  
 <table class="table table-bordered table-striped" id="laravel_datatable">
    <thead>
       <tr>
          <th>S. No</th>
          <th>Order ID</th>
-         <th>Service</th>
          <th>Name</th>
          <th>Email</th>
+         <th>Address</th>
+         <th>Mobile Number</th>
          <th>Status</th>
+         <th>Action</th>
          <th>Change</th>
       </tr>
    </thead>
 </table>
 </div>
-
-
+  
 <div class="modal fade" id="ajax-product-modal" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+
+
+  <div class="modal-dialog modal-lg" role="document">
+    
     <div class="modal-content" >
       <div class="modal-header">
-        <h2 class="modal-title" id="exampleModalLabel">Order Information</h2>
+        <h5 class="modal-title" id="exampleModalLabel">My Modal</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-      <form id="productForm" name="productForm" class="form-horizontal">
       <div class="row">
         <div class="col-md-12 order-md-1">
-          <h4 class="mb-3" id="service-content" name ="service-content" class="service-content">d</h4>
+          <h4 class="mb-3">Order Information</h4>
+          <form action = "order" method = "POST" class="needs-validation" novalidate>
+            @csrf
+            <input type="text" class="service-id" name="service-type" class="mb-3" hidden>
 
-            <input type="text" id="id" name="id" class="mb-3" hidden >
-            <input type="text" id="service-id" name="service-id" hidden class="mb-3" >
-            <input type="text" id="status" name="status" hidden class="mb-3" >
             <div class="row">
               <div class="col-md-6 mb-3">
                 <label for="firstName">Name</label>
-                <input disabled type="text" class="form-control" id = "name" name="name" placeholder="" required>
+                <input type="text" class="form-control" id = "name" name="name" placeholder="" required>
+                <div class="invalid-feedback">
+                  Valid name is required.
+                </div>
               </div>
               <div class="col-md-6 mb-3">
                 <label for="email">Email</label>
-                <input type="email" class="form-control" id = "email" name="email" disabled  required>
+                <input type="email" class="form-control" id = "email" name="email" placeholder="you@example.com" required>
+                <div class="invalid-feedback">
+                  Please enter a valid email address for shipping updates.
+                </div>
               </div>
             </div>
           
             <div class="row">
               <div class="col-md-4 mb-3">
                   <label for="cc-number">Mobile number</label>
-                  <input type="text" class="form-control" id = "mobile-number" name="mobile-number" disabled >
+                  <input type="text" class="form-control" id = "mobile-number" name="mobile-number" placeholder="" required>
+                  <div class="invalid-feedback">
+                    Mobile Number is required
+                  </div>
                 </div>
               <div class="col-md-8 mb-3">
                 <label for="address">Address</label>
-                <input type="text" class="form-control" id = "address" name="address" placeholder="1234 Main St" disabled >
+                <input type="text" class="form-control" id = "address" name="address" placeholder="1234 Main St" required>
+                <div class="invalid-feedback">
+                  Please enter your address.
+                </div>
               </div>
             </div>
 
@@ -127,19 +108,19 @@
             <div class="row">
               <div class="col-md-3 mb-3">
                 <label>Start Date</label>
-                <input id="startDate" id = "startDay" class="form-control"disabled name = "startDay"/>
+                <input id="startDate" id = "startDay" name = "startDay"/>
               </div>
               <div class="col-md-3 mb-3">
                 <label>End Date</label>
-                <input id="endDate" id = "endDay" class="form-control"disabled name = "endDay"/>
+                <input id="endDate" id = "endDay" name = "endDay"/>
               </div>
               <div class ="col-md-3 mb-3">
                 <label>Start Time</label>
-                <input id="starttimepicker" class="form-control"disabled name = "startTime">
+                <input id="starttimepicker" name = "startTime">
               </div>
               <div class ="col-md-3 mb-3">
                 <label>End Time</label>
-                <input id="endtimepicker" disabled class="form-control"name = "endTime">
+                <input id="endtimepicker" name = "endTime">
               </div>
             </div>
 
@@ -147,19 +128,19 @@
             <h4 class="mb-3">Payment Info</h4>
             <div class="mb-3">
               <label for="email">Email</label>
-              <input type="email" id = "pay-email" class="form-control" name="pay-email" disabled >
+              <input type="email" id = "pay-email" class="form-control" name="pay-email" placeholder="you@example.com" required>
+              <div class="invalid-feedback">
+                Please enter a valid email address of paypal account.
+              </div>
             </div>
             <hr class="mb-4">
-            <div class="col-md-12">
-             <button type="submit" hidden class="btn btn-primary" id="btn-save" value="create">Save changes</button>
-            </div>      
-         </div>
+            <button class="btn btn-primary btn-lg btn-block" type="submit" >Order</button>
+          </form>
+        </div>
       </div>
-      </form>
-
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
     
@@ -167,17 +148,7 @@
   
 </div>
 
-                </section>
-
-
-
-        </div>
-
-
-    <!-- END: Content-->
-
-    <!-- Datatable script-->
-    <script>
+<script>
  var SITEURL = '{{URL::to('/')}}';
  $(document).ready( function () {
    $.ajaxSetup({
@@ -195,9 +166,12 @@
          columns: [
                   {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,searchable: false},
                   {data: 'id', name: 'id'},
-                  {data: 'service.name', name: 'service_id'},
                   { data: 'name', name: 'name' },
                   { data: 'email', name: 'email' },
+                  { data: 'address', name: 'address' },
+                  { data: 'mobile_number', name: 'mobile_number' },
+                  { data: 'status', name: 'status' },
+
                   {data: 'change', name: 'change', orderable: false},
                   {data: 'action', name: 'action', orderable: false},
                ],
@@ -213,7 +187,7 @@
         $('#ajax-product-modal').modal('show');
     });
   
-   /* When click detail user */
+   /* When click edit user */
     $('body').on('click', '.edit-product', function () {
       var product_id = $(this).data('id');
       $.get('/product-list/' + product_id +'/edit', function (data) {
@@ -222,10 +196,9 @@
          $('#description-error').hide();
          $('#orderCrudModal').html("Edit Product");
           $('#btn-save').val("edit-product");
-          $('#service-content').text('Service | '+data.service.name) ;
-          $('#id').val(data.id);
-          $('#status').val(data.status);
-          $('#service-id').val(data.service_id);
+          $('#ajax-product-modal').modal('show');
+          $('#product_id').val(data.id);
+
           $('#name').val(data.name);
           $('#email').val(data.email);
           $('#mobile-number').val(data.mobile_number);
@@ -235,7 +208,6 @@
           $('#starttimepicker').val(data.start_time);
           $('#endtimepicker').val(data.end_time);
           $('#pay-email').val(data.pay_email);
-          $('#ajax-product-modal').modal('show');
       })
    });
  
@@ -243,7 +215,7 @@
   
         var product_id = $(this).data("id");
         
-        if(confirm("Are You sure want to delete !")){
+        if(confirm("Are You sure want to deleete !")){
           $.ajax({
               type: "get",
               url: SITEURL + "/product-list/delete/"+product_id,
@@ -257,33 +229,9 @@
           });
         }
     }); 
+
    
-
-    $('body').on('click', '#change-status', function () {
-     var id = $(this).data('id') 
-     var status = $(this).data('status') ;
-     var prev = $(this).data('prev') ;
-     if( status != prev ){
-      $.ajax({
-          data: {id: id, status: status},
-          url: SITEURL + "/product-list/store",
-          type: "POST",
-          dataType: 'json',
-          success: function (data) {
-              var oTable = $('#laravel_datatable').dataTable();
-              oTable.fnDraw(false);
-               
-          },
-          error: function (data) {
-              console.log('Error:', data);
-              $('#btn-save').html('Save Changes');
-          }
-      });              
-     }
-    }); 
-
-
-
+   
    });
   
 if ($("#productForm").length > 0) {
@@ -293,6 +241,7 @@ if ($("#productForm").length > 0) {
   
       var actionType = $('#btn-save').val();
       $('#btn-save').html('Sending..');
+       
       $.ajax({
           data: $('#productForm').serialize(),
           url: SITEURL + "/product-list/store",
@@ -316,10 +265,30 @@ if ($("#productForm").length > 0) {
   })
 }
 </script>
-
-
-        <script src="js/scripts.js"></script>
-
+<script>
+  $('#endtimepicker').timepicker();
+  $('#starttimepicker').timepicker();
+</script>
+<script>
+        var today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+        $('#startDate').datepicker({
+            uiLibrary: 'bootstrap4',
+            iconsLibrary: 'fontawesome',
+            minDate: today,
+            maxDate: function () {
+                return $('#endDate').val();
+            }
+        });
+        $('#endDate').datepicker({
+            uiLibrary: 'bootstrap4',
+            iconsLibrary: 'fontawesome',
+            minDate: function () {
+                return $('#startDate').val();
+            }
+        });
+</script>
 
 </body>
+ 
 </html>
+

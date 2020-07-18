@@ -13,6 +13,27 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('product-list', 'ProductController@index');
+Route::get('product-list/{id}/edit', 'ProductController@edit');
+Route::get('product-list/{id}/changestatus', 'ProductController@changestatus');
+Route::post('product-list/store', 'ProductController@store');
+Route::get('product-list/delete/{id}', 'ProductController@destroy');
+
+
+Route::get('send-mail', function () {
+   
+    $details = [
+        'title' => 'Mail from ItSolutionStuff.com',
+        'body' => 'This is for testing email using smtp'
+    ];
+   
+    \Mail::to('najeeb.champs@yahoo.com')->send(new \App\Mail\MyTestMail($details));
+   
+    dd("Email is Sent.");
+});
+
+
+
 Route::get('/', 'HomeController@index');
 
 Route::get('/admin', 'AdminController@index');

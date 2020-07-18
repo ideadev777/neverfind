@@ -7,6 +7,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 
+use App\Order;
 use DB;
 use Illuminate\Http\Request;
 
@@ -34,10 +35,12 @@ class AdminController extends BaseController
 	}
 	public function orderlist()
 	{
-		$orders = DB::select('select * from orders');
+	 	return view('admin_orderlist');
+    /*
+    		$orders = DB::select('select * from orders');
 
 		return view('admin_orderlist', [
 			'orders' => $orders
-		]);
+		]);*/
 	}
 }

@@ -9,6 +9,7 @@ use Illuminate\Routing\Controller as BaseController;
 
 use DB;
 use Illuminate\Http\Request;
+use Carbon\Carbon ;
 class OrderController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
@@ -31,23 +32,30 @@ class OrderController extends BaseController
 	public function postOrder(Request $req)
 	{
 		$mail = $req->input('email') ;
+		$service_id = $req->input('service-type') ;
 		$name = $req->input('name') ;
 		$address = $req->input('address') ;
 		$mobile = $req->input('mobile-number') ;
 		$pay = $req->input('pay-email') ;
-		$service_id = $req->input('service-type') ;
-
+		$start_date = $req->input('startDay') ;
+		$end_date = $req->input('endDay') ;
+		$start_time = $req->input('startTime') ;
+		$end_time = $req->input('endTime') ;
 		$data=array(
+			'service_id' => $service_id,
+			'name' => $name, 
+			'status'=>'0',
 			'email'=>$mail,
 			'address'=>$address,
-			'mobile-number' => $mobile,
-			'name' => $name, 
-			'pay-email' => $pay,
-			'service_id' => $service_id
+			'mobile_number' => $mobile,
+			'pay_email' => $pay,
+			'start_date' => Carbon::parse($start_date),
+			'end_date' => Carbon::parse($end_date),
+			'start_time' => $start_time,
+			'end_time' => $end_time
 		);
-		DB::table('orders')->insert($data);
+		DB::table('orders')->insert($data) ;
 		return redirect()->back()->with('success', 1 );
- 	//	return redirect('/order') ;
 	}
 	public function delete($id)
 	{

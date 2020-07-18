@@ -54,10 +54,10 @@
           <div class="col-md-4">
             <div class="card-box-b card-shadow news-box">
               <div class="img-box-b">
-                <img src="{{URL::asset('images')}}/{{$service->image_path}}" alt="" class="img-b img-fluid "style="height: 300px;">
+                <img src="{{URL::asset('images')}}/{{$service->image_path}}" alt="" class="img-b img-fluid " width="100%">
               </div>
             </div>
-             <h1>{{$service->name}}</h1>
+             <h3>{{$service->name}}</h3>
               <div class="curtail-text">
                 {{$service->summary}}
               </div>
@@ -82,6 +82,7 @@
       </div>
 
 
+      @if($cnt>9)
         <div class="row">
           <div class="col-sm-12">
             <nav class="pagination-a">
@@ -100,6 +101,8 @@
             </nav>
           </div>
         </div>
+      @endif
+
       </div>
     </section><!-- End Blog Grid-->
 
@@ -107,6 +110,7 @@
 
 <div class="modal fade" id="order-modal" tabindex="-1" role="dialog" aria-labelledby="my-modal" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
+    
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">My Modal</h5>
@@ -117,7 +121,7 @@
       <div class="modal-body">
       <div class="row">
         <div class="col-md-12 order-md-1">
-          <h4 class="mb-3">Billing address</h4>
+          <h4 class="mb-3">Your information</h4>
           <form action = "order" method = "POST" class="needs-validation" novalidate>
             @csrf
             <input type="text" class="service-id" name="service-type" class="mb-3" hidden>
@@ -125,14 +129,14 @@
             <div class="row">
               <div class="col-md-6 mb-3">
                 <label for="firstName">Name</label>
-                <input type="text" class="form-control" name="name" placeholder="" required>
+                <input type="text" class="form-control" name="name" placeholder="" required maxlength="30">
                 <div class="invalid-feedback">
                   Valid name is required.
                 </div>
               </div>
               <div class="col-md-6 mb-3">
                 <label for="email">Email</label>
-                <input type="email" class="form-control" name="email" placeholder="you@example.com" required>
+                <input type="email" class="form-control" name="email" placeholder="you@example.com" required maxlength="30">
                 <div class="invalid-feedback">
                   Please enter a valid email address for shipping updates.
                 </div>
@@ -142,14 +146,14 @@
             <div class="row">
               <div class="col-md-4 mb-3">
                   <label for="cc-number">Mobile number</label>
-                  <input type="text" class="form-control" name="mobile-number" placeholder="" required>
+                  <input type="text" class="form-control" name="mobile-number" placeholder="" required maxlength="20">
                   <div class="invalid-feedback">
                     Mobile Number is required
                   </div>
                 </div>
               <div class="col-md-8 mb-3">
                 <label for="address">Address</label>
-                <input type="text" class="form-control" name="address" placeholder="1234 Main St" required>
+                <input type="text" class="form-control" name="address" placeholder="1234 Main St" required maxlength="40">
                 <div class="invalid-feedback">
                   Please enter your address.
                 </div>
@@ -161,19 +165,19 @@
             <div class="row">
               <div class="col-md-3 mb-3">
                 <label>Start Date</label>
-                <input id="startDate" name = "startDay"/>
+                <input id="startDate" name = "startDay" maxlength="20" required/>
               </div>
               <div class="col-md-3 mb-3">
                 <label>End Date</label>
-                <input id="endDate" name = "endDay"/>
+                <input id="endDate" name = "endDay" required maxlength="20"/>
               </div>
               <div class ="col-md-3 mb-3">
                 <label>Start Time</label>
-                <input id="starttimepicker" name = "startTime">
+                <input id="starttimepicker" required name = "startTime" maxlength="10"/>
               </div>
               <div class ="col-md-3 mb-3">
                 <label>End Time</label>
-                <input id="endtimepicker" name = "endTime">
+                <input id="endtimepicker" name = "endTime" required maxlength="10"/>
               </div>
             </div>
 
@@ -181,7 +185,7 @@
             <h4 class="mb-3">Payment Info</h4>
             <div class="mb-3">
               <label for="email">Email</label>
-              <input type="email" class="form-control" name="pay-email" placeholder="you@example.com" required>
+              <input type="email" class="form-control" name="pay-email" placeholder="you@example.com" required maxlength="20">
               <div class="invalid-feedback">
                 Please enter a valid email address of paypal account.
               </div>
@@ -196,6 +200,7 @@
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
+    
   </div>
 </div>
 <!-- jQuery, Popper and Bootstrap JS -->

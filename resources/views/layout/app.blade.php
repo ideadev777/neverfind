@@ -10,8 +10,9 @@
   <meta content="" name="keywords">
 
   <!-- Favicons -->
-  <link href="{{URL::asset('assets/img/favicon.png')}}" rel="icon">
-  <link href="{{URL::asset('assets/img/apple-touch-icon.png')}}" rel="apple-touch-icon">
+
+  <link href="{{URL::asset('images/favicon.png')}}" rel="icon">
+  <link href="{{URL::asset('images/apple-touch-icon.png')}}" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
 <!--  <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet"> -->
@@ -30,6 +31,8 @@
 
   <!-- =======================================================
    -->
+
+
 </head>
 
 <body>
@@ -42,6 +45,7 @@
         <span></span>
         <span></span>
       </button>
+        <a class="navbar-brand" href="/"><img src="{{URL::asset('images/logo.png')}}" alt="image" style="width: 100px; height: 50px;"></a>
       <a class="navbar-brand text-brand" href="/">Cleaning &nbsp;<span class="color-b">Service</span></a>
       <div class="navbar-collapse collapse justify-content-center" id="navbarDefault">
 
