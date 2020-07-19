@@ -115,7 +115,7 @@
                         <span class="color-a">contact@example.com</span>
                       </p>
                       <p class="mb-1">Phone.
-                        <span class="color-a">+54 356 945234</span>
+                        <span class="color-a">+12 345 678999</span>
                       </p>
                     </div>
                   </div>

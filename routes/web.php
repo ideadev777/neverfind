@@ -13,12 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('product-list', 'ProductController@index');
-Route::get('product-list/{id}/edit', 'ProductController@edit');
-Route::get('product-list/{id}/changestatus', 'ProductController@changestatus');
-Route::post('product-list/store', 'ProductController@store');
-Route::get('product-list/delete/{id}', 'ProductController@destroy');
-Route::get('product-list/sendinvoice/{id}', 'ProductController@sendInvoice');
 
 
 Route::get('send-mail', function () {
@@ -28,11 +22,20 @@ Route::get('send-mail', function () {
         'body' => 'This is for testing email using smtp'
     ];
    
-    \Mail::to('angrytom97@yahoo.com')->send(new \App\Mail\MyTestMail($details));
+    \Mail::to('11')->send(new \App\Mail\MyTestMail($details));
    
-    dd("Email is Sent.");
 });
 
+Route::group(['middleware' => ['admin']], function () {
+	Route::get('product-list', 'ProductController@index');
+	Route::get('product-list/{id}/edit', 'ProductController@edit');
+	Route::get('product-list/{id}/changestatus', 'ProductController@changestatus');
+	Route::post('product-list/store', 'ProductController@store');
+	Route::get('product-list/delete/{id}', 'ProductController@destroy');
+	Route::get('product-list/sendinvoice/{id}', 'ProductController@sendInvoice');
+	Route::get('/admin/orderlist', 'AdminController@orderlist');
+	Route::get('/order/delete/{id}','OrderController@delete');
+});
 
 
 Route::get('/', 'HomeController@index');
@@ -41,10 +44,8 @@ Route::get('/admin', 'AdminController@index');
 
 Route::get('/admin/logIn', 'AdminController@logIn');
 Route::post('/admin/logIn','AdminController@postLogIn') ;
-
 Route::get('/admin/logout', 'AdminController@logOut');
 
-Route::get('/admin/orderlist', 'AdminController@orderlist');
 
 Route::get('/contact', 'ContactController@index');
 Route::post('/contact', 'ContactController@postSendMessage');
@@ -56,7 +57,6 @@ Route::get('/order','OrderController@index');
 Route::get('/order/{id}','OrderController@detail');
 Route::post('/order','OrderController@postOrder');
 
-Route::get('/order/delete/{id}','OrderController@delete');
 
 //Route::post('order/delete', function() {    return 'ok';});
 // {   	return view('order', ['bgImg' => array("order_1"),'service_id'=>$id]);});

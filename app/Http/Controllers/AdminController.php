@@ -18,6 +18,7 @@ class AdminController extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 	public function index()
 	{
+		if( Auth::check() ) return redirect("/admin/orderlist");
 		return redirect("/admin/logIn") ;
 //		return view('admin') ;
 	} 
@@ -28,6 +29,7 @@ class AdminController extends BaseController
 
 	public function logOut()
 	{
+		Auth::logOut() ;
 		return redirect("/admin/logIn") ;
 	}
 

@@ -27,7 +27,7 @@ class ProductController extends Controller
             ->addIndexColumn()
             ->make(true);
         }
-        return view('list');
+//        return view('list');
     }
 
     public function store(Request $request)
