@@ -1,13 +1,8 @@
-
 <!DOCTYPE html>
-  
 <html lang="en">
 <head>
-<!-- CSRF Token -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-
-
 <meta name="csrf-token" content="{{ csrf_token() }}">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
 <title>Admin </title>
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
@@ -19,61 +14,58 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 
-<!--
-    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+<link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
+<script src="https://use.fontawesome.com/releases/v5.13.0/js/all.js" crossorigin="anonymous"></script>
+<link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:500,700" rel="stylesheet" type="text/css" />
+<link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet" type="text/css" />
+<link href="css/styles.css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="{{URL::asset('custom/resume.css')}}">
 
-    <link href="https://nightly.datatables.net/css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
-    <script src="https://nightly.datatables.net/js/jquery.dataTables.js"></script>
-<script src="http://cdn.datatables.net/plug-ins/1.10.15/dataRender/datetime.js"></script>
--->
-<!--
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<style type="text/css">
+.bd-example-modal-lg .modal-dialog{
+    display: table;
+    position: relative;
+    margin: 0 auto;
+    top: calc(50% - 24px);
+  }
 
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
--->
-        <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
-        <!-- Font Awesome icons (free version)-->
-        <script src="https://use.fontawesome.com/releases/v5.13.0/js/all.js" crossorigin="anonymous"></script>
-        <!-- Google fonts-->
-        <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:500,700" rel="stylesheet" type="text/css" />
-        <link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet" type="text/css" />
-        <link href="css/styles.css" rel="stylesheet" />
-    <link rel="stylesheet" type="text/css" href="{{URL::asset('custom/resume.css')}}">
-
-
-
+  .bd-example-modal-lg .modal-dialog .modal-content{
+    background-color: transparent;
+    border: none;
+  }
+  
+  </style>
 </head>
 <body>
 
 
-          <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
-            <a class="navbar-brand js-scroll-trigger" href="#page-top">
-                <span class="d-block d-lg-none">Cleaning Service | Admin</span>
-                <span class="d-none d-lg-block"><img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="{{URL::asset('images/admin_avatar.png')}}" alt="" /></span>
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/admin/orderlist">Order List</a></li>
-                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/admin/logout">Log out</a></li>
-                </ul>
-            </div>
-        </nav>
-        <!-- Page Content-->
-        <div class="container-fluid p-0">
-           
-           
+<section>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
+    <a class="navbar-brand js-scroll-trigger" href="#page-top">
+      <span class="d-block d-lg-none">Cleaning Service | Admin</span>
+      <span class="d-none d-lg-block"><img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="{{URL::asset('images/admin_avatar.png')}}" alt="" /></span>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span>
+    </button>
+ 
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/admin/orderlist">Order List</a></li>
+        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/admin/logout">Log out</a></li>
+      </ul>
+    </div>
+  </nav>  
+</section>
 
+<div class="container-fluid p-0">
 
+<section>
+  <div class="row">
+    <div class="col-md-12"><h2> Order List </h2></div>
+</section>
 
-<section id="data-list-view" class="data-list-view-header">
-<div class="container">
-<br>
-<br>
-<h2> Order List </h2>
+<section id = "table-section">
+<div class="container table-responsive col-md-12">
 <table class="table table-bordered table-striped" id="laravel_datatable">
    <thead>
       <tr>
@@ -113,7 +105,7 @@
         <div class="col-md-12 order-md-1">
           <h4 class="mb-3" id="service-content" name ="service-content" class="service-content">d</h4>
 
-            <input type="text" id="id" name="id" class="mb-3"  >
+            <input type="text" id="id" name="id" class="mb-3"  hidden>
             <input type="text" id="service-id" name="service-id" hidden class="mb-3" >
             <input type="text" id="status" name="status" hidden class="mb-3" >
             <div class="row">
@@ -183,33 +175,37 @@
   
 </div>
 
-                </section>
+</section>
 
-
-
+<div class="modal fade bd-example-modal-lg" id = "loadingModal" data-backdrop="static" data-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content" style="width: 48px">
+            <span class="fa fa-spinner fa-spin fa-3x"></span>
         </div>
+    </div>
+</div>
 
 
-    <!-- END: Content-->
+</div>
 
-    <!-- Datatable script-->
-    <script>
+
+<script>
  var SITEURL = '{{URL::to('/')}}';
  $(document).ready( function () {
    $.ajaxSetup({
       headers: {
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
       }
-  });
+ });
 
-  $('#laravel_datatable').DataTable({
-         processing: true,
-         serverSide: true,
-         ajax: {
-          url: SITEURL + "/product-list",
-          type: 'GET',
-         },
-         columns: [
+ $('#laravel_datatable').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+         url: SITEURL + "/product-list",
+         type: 'GET',
+        },
+        columns: [
                   {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,searchable: false},
                   {data: 'service.name', name: 'service_id'},
                   {data: 'created_at', name: 'created_at'},
@@ -229,7 +225,7 @@
                   return moment(data).format('MM/DD/YYYY'); 
                   }}
               ],
-      });
+  });
 
  
  /*  When user click add user button */
@@ -311,6 +307,7 @@
      var status = $(this).data('status') ;
      var prev = $(this).data('prev') ;
      if( status != prev ){
+      $('#loadingModal').modal('show');
       $.ajax({
           data: {id: id, status: status},
           url: SITEURL + "/product-list/store",
@@ -319,18 +316,17 @@
           success: function (data) {
               var oTable = $('#laravel_datatable').dataTable();
               oTable.fnDraw(false);
-               
+              $('#loadingModal').modal('hide');
           },
           error: function (data) {
               console.log('Error:', data);
               $('#btn-save').html('Save Changes');
+              $('#loadingModal').modal('hide');
           }
       });              
+      $('#loadingModal').modal('hide');
      }
     }); 
-
-
-
    });
   
 if ($("#productForm").length > 0) {
@@ -362,11 +358,9 @@ if ($("#productForm").length > 0) {
     }
   })
 }
+
 </script>
-
-
-        <script src="js/scripts.js"></script>
-
-
+<script src="js/scripts.js"></script>
 </body>
+
 </html>
