@@ -18,6 +18,7 @@ Route::get('product-list/{id}/edit', 'ProductController@edit');
 Route::get('product-list/{id}/changestatus', 'ProductController@changestatus');
 Route::post('product-list/store', 'ProductController@store');
 Route::get('product-list/delete/{id}', 'ProductController@destroy');
+Route::get('product-list/sendinvoice/{id}', 'ProductController@sendInvoice');
 
 
 Route::get('send-mail', function () {

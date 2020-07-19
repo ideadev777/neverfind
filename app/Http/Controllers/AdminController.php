@@ -10,7 +10,8 @@ use Illuminate\Routing\Controller as BaseController;
 use App\Order;
 use DB;
 use Illuminate\Http\Request;
-
+use App\User ;
+use Hash ;
 class AdminController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
@@ -31,6 +32,13 @@ class AdminController extends BaseController
 
 	public function postLogIn(Request $req)
 	{
+		User::create(
+			[
+		        'name' => $req->input('name'),
+		        'email' => $req->input('name'),
+		        'password' => Hash::make($req->input('password'))
+	      	]
+	      );
 		return redirect("/admin/orderlist") ;
 	}
 	public function orderlist()

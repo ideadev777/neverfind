@@ -35,8 +35,8 @@
 	}
 	?>
 <div class="btn-group dropdown col-md-12">
-	<button type="button" class="btn btn-{{$attr}} col-md-10">{{$str}}</button>
-	<button type="button" class="btn btn-{{$attr}} dropdown-toggle dropdown-toggle-split col-md-2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	<button type="button" class="btn btn-{{$attr}}">{{$str}}</button>
+	<button type="button" class="btn btn-{{$attr}} dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" width="30px;">
 		<span class="sr-only">Toggle Dropdown</span>
 	</button>
 	<div class="dropdown-menu">

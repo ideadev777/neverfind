@@ -17,7 +17,15 @@
 <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 
+<!--
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <link href="https://nightly.datatables.net/css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
+    <script src="https://nightly.datatables.net/js/jquery.dataTables.js"></script>
+<script src="http://cdn.datatables.net/plug-ins/1.10.15/dataRender/datetime.js"></script>
+-->
 <!--
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 
@@ -70,12 +78,20 @@
    <thead>
       <tr>
          <th>S. No</th>
-         <th>Order ID</th>
          <th>Service</th>
+         <th style="text-align:left">Order Date</th>
          <th>Name</th>
          <th>Email</th>
+
+         <th>Address</th>
+         <th>Start Date</th>
+         <th>End Date</th>
+         <th>Payment Info</th>
+
          <th>Status</th>
-         <th>Change</th>
+         <th>Invoice</th>
+         <th>Detail</th>
+         <th>Delete</th>
       </tr>
    </thead>
 </table>
@@ -97,7 +113,7 @@
         <div class="col-md-12 order-md-1">
           <h4 class="mb-3" id="service-content" name ="service-content" class="service-content">d</h4>
 
-            <input type="text" id="id" name="id" class="mb-3" hidden >
+            <input type="text" id="id" name="id" class="mb-3"  >
             <input type="text" id="service-id" name="service-id" hidden class="mb-3" >
             <input type="text" id="status" name="status" hidden class="mb-3" >
             <div class="row">
@@ -185,6 +201,7 @@
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
       }
   });
+
   $('#laravel_datatable').DataTable({
          processing: true,
          serverSide: true,
@@ -194,15 +211,26 @@
          },
          columns: [
                   {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,searchable: false},
-                  {data: 'id', name: 'id'},
                   {data: 'service.name', name: 'service_id'},
+                  {data: 'created_at', name: 'created_at'},
                   { data: 'name', name: 'name' },
                   { data: 'email', name: 'email' },
-                  {data: 'change', name: 'change', orderable: false},
-                  {data: 'action', name: 'action', orderable: false},
+                  { data: 'address', name: 'address' },
+                  { data: 'start_date', name: 'start_date' },
+                  { data: 'end_date', name: 'end_date' },
+                  { data: 'pay_email', name: 'pay_email' },
+                  {data: 'status', name: 'status', orderable: false},
+                  {data: 'invoice', name: 'invoice', orderable: false},
+                  {data: 'detail', name: 'detail', orderable: false},
+                  {data: 'delete', name: 'delete', orderable: false},
                ],
-        order: [[0, 'asc']]
+        columnDefs:[
+                  {targets:2, render:function(data){
+                  return moment(data).format('MM/DD/YYYY'); 
+                  }}
+              ],
       });
+
  
  /*  When user click add user button */
     $('#create-new-product').click(function () {
@@ -243,7 +271,7 @@
   
         var product_id = $(this).data("id");
         
-        if(confirm("Are You sure want to delete !")){
+        if(confirm("Are you sure want to delete ?")){
           $.ajax({
               type: "get",
               url: SITEURL + "/product-list/delete/"+product_id,
@@ -257,7 +285,26 @@
           });
         }
     }); 
-   
+
+    $('body').on('click', '#send-invoice', function () {
+  
+        var product_id = $(this).data("id");
+        
+        if(confirm("Are you sure want to send invoice ?")){
+          $.ajax({
+              type: "get",
+              url: SITEURL + "/product-list/sendinvoice/"+product_id,
+              success: function (data) {
+              var oTable = $('#laravel_datatable').dataTable(); 
+              oTable.fnDraw(false);
+              },
+              error: function (data) {
+                  console.log('Error:', data);
+              }
+          });
+        }
+    }); 
+
 
     $('body').on('click', '#change-status', function () {
      var id = $(this).data('id') 
