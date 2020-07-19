@@ -87,19 +87,17 @@
                                                     <div class="form-group d-flex justify-content-between align-items-center">
                                                         <div class="text-left">
                                                             <fieldset class="checkbox">
-                                                                <div class="vs-checkbox-con vs-checkbox-primary">
-                                                                    <input type="checkbox">
-                                                                    <span class="vs-checkbox">
-                                                                        <span class="vs-checkbox--check">
-                                                                            <i class="vs-icon feather icon-check"></i>
-                                                                        </span>
-                                                                    </span>
-                                                                    <span class="">Remember me</span>
-                                                                </div>
+                                                            
                                                             </fieldset>
                                                         </div>
                                                         
                                                     </div>
+                                                    @if( session('error') )
+                                                    <div class="alert alert-success">
+                                                          <strong>Error!</strong> 
+                                                          Username or password is incorrect.
+                                                        </div>
+                                                    @endif
                                                     <button type="submit" class="btn btn-primary float-right btn-inline">Login</button>
                                                 </form>
                                             </div>
