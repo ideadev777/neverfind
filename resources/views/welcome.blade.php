@@ -6,6 +6,8 @@
 <script src="{{URL::asset('js/popper.min.js')}}" ></script>
 <script src="{{URL::asset('js/bootstrap.min.js')}}" ></script>
 <script src="{{URL::asset('custom/calendar.js')}}" type="text/javascript"></script>
+<script src="{{URL::asset('js/jquery.mask.min.js')}}" ></script>
+<script src="{{URL::asset('js/jquery.validate.min.js')}}" ></script>
 
 @section('title', 'Home')
 
@@ -200,7 +202,7 @@
       <div class="row">
         <div class="col-md-12 order-md-1">
           <h4 class="mb-3">Your information</h4>
-          <form action = "order" method = "POST" class="needs-validation" novalidate>
+          <form action = "order" id="orderForm" name="orderForm" method = "POST" class="needs-validation" novalidate>
             @csrf
             <input type="text" class="service-id" name="service-type" class="mb-3" hidden>
 
@@ -224,7 +226,7 @@
             <div class="row">
               <div class="col-md-4 mb-3">
                   <label for="cc-number">Mobile number</label>
-                  <input type="text" class="form-control" name="mobile-number" placeholder="" required maxlength="20">
+                  <input type="text" class="form-control phone_us" name="mobilenumber" placeholder="" required maxlength="20">
                   <div class="invalid-feedback">
                     Mobile Number is required
                   </div>
@@ -243,19 +245,19 @@
             <div class="row">
               <div class="col-md-3 mb-3">
                 <label>Start Date</label>
-                <input id="startDate" name = "startDay" maxlength="20" required/>
+                <input id="startDate" type="date" name = "startDay" maxlength="20" class="form-control" required/>
               </div>
               <div class="col-md-3 mb-3">
                 <label>End Date</label>
-                <input id="endDate" name = "endDay" required maxlength="20"/>
+                <input id="endDate" name = "endDay" type="date" class="form-control" required maxlength="20"/>
               </div>
               <div class ="col-md-3 mb-3">
                 <label>Start Time</label>
-                <input id="starttimepicker" required name = "startTime" maxlength="10"/>
+                <input id="starttimepicker" required type="time" name = "startTime" class="form-control" maxlength="10"/>
               </div>
               <div class ="col-md-3 mb-3">
                 <label>End Time</label>
-                <input id="endtimepicker" name = "endTime" required maxlength="10"/>
+                <input id="endtimepicker" name = "endTime"  type="time" class="form-control" required maxlength="10"/>
               </div>
             </div>
 
@@ -269,7 +271,8 @@
               </div>
             </div>
             <hr class="mb-4">
-            <button class="btn btn-primary btn-lg btn-block" type="submit" >Order</button>
+            <button class="btn btn-primary btn-lg btn-block" type="submit" id="formSubmit" name="formSubmit" >Order</button>
+            <button style="display: none;" id="formReset" name="formReset" type="reset">Reset</button>
           </form>
         </div>
       </div>
@@ -309,30 +312,73 @@
 $('#order-modal').on('show.bs.modal', function (event) {
   var name = $(event.relatedTarget).data('name');
   var id = $(event.relatedTarget).data('val');
+
+  var btn = document.getElementById('formReset');
+  btn.click();
+  $("#formSubmit").attr('disabled', 'disabled');
+
   $(this).find(".modal-title").text('Order | '+name);
   $(this).find(".service-id").val(id);
 });
+
+var form = document.getElementById('formOrder');
+$('.form-control', form).on('change', validate);
+$('.form-control', form).on('keyup', validate);
+function validate(e) {
+  var controls = $('.form-control');
+  for (var i = 0; i < controls.length; i ++) {
+    if ($(controls[i]).val() == '') 
+      return;
+  }
+
+  $('#formSubmit').removeAttr('disabled');
+}
+$('.phone_us').mask('(000) 000-0000');
+$("#formOrder").validate({
+  rules: {
+    /*firstname: "required",
+    lastname: "required",
+    username: {
+      required: true,
+      minlength: 2
+    },
+    password: {
+      required: true,
+      minlength: 5
+    },
+    confirm_password: {
+      required: true,
+      minlength: 5,
+      equalTo: "#password"
+    },*/
+    email: {
+      required: true,
+      email: true
+    },
+    mobilenumber: {
+      minlength: 10
+    },
+    //agree: "required"
+  },
+  messages: {
+    /*firstname: "Please enter your firstname",
+    lastname: "Please enter your lastname",
+    username: {
+      required: "Please enter a username",
+      minlength: "Your username must consist of at least 2 characters"
+    },
+    password: {
+      required: "Please provide a password",
+      minlength: "Your password must be at least 5 characters long"
+    },
+    confirm_password: {
+      required: "Please provide a password",
+      minlength: "Your password must be at least 5 characters long",
+      equalTo: "Please enter the same password as above"
+    },*/
+    email: "Please enter a valid email address",
+    mobilenumber: "Please enter a valid mobile number"
+  }
+});
 </script>
 
-<script>
-  $('#endtimepicker').timepicker();
-  $('#starttimepicker').timepicker();
-</script>
-<script>
-        var today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
-        $('#startDate').datepicker({
-            uiLibrary: 'bootstrap4',
-            iconsLibrary: 'fontawesome',
-            minDate: today,
-            maxDate: function () {
-                return $('#endDate').val();
-            }
-        });
-        $('#endDate').datepicker({
-            uiLibrary: 'bootstrap4',
-            iconsLibrary: 'fontawesome',
-            minDate: function () {
-                return $('#startDate').val();
-            }
-        });
-</script>

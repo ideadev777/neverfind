@@ -43,6 +43,16 @@ class AdminController extends BaseController
 	      	]
 	      );
 	}
+	public function postUpdateAdmin( Request $req ) 
+	{
+		$validatedData = ([
+            'name' => $req->username,
+            'email' => $req->username,
+            'password' => Hash::make($req->password),
+        ]);
+        User::whereId(Auth::id())->update($validatedData);
+        return redirect()->back()->with('success',1) ;
+	}
 
 	public function postLogIn(Request $req)
 	{

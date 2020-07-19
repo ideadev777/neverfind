@@ -9,6 +9,7 @@
 <link  href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>  
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
+
 <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 
@@ -20,6 +21,7 @@
 <link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet" type="text/css" />
 <link href="css/styles.css" rel="stylesheet" />
 <link rel="stylesheet" type="text/css" href="{{URL::asset('custom/resume.css')}}">
+
 
 <style type="text/css">
 .bd-example-modal-lg .modal-dialog{
@@ -33,10 +35,11 @@
     background-color: transparent;
     border: none;
   }
-  
-  </style>
+</style>
+
 </head>
 <body>
+
 
 
 <section>
@@ -51,17 +54,20 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav">
         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/admin/orderlist">Order List</a></li>
+        <li class="nav-item"><a href="#" class="nav-link js-scroll-trigger" data-toggle="modal" data-target="#user-update-modal">Change Admin Info</a></li>
         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/admin/logout">Log out</a></li>
       </ul>
     </div>
   </nav>  
 </section>
 
+
 <div class="container-fluid p-0">
 
 <section>
   <div class="row">
-    <div class="col-md-12"><h2> Order List </h2></div>
+    <div class="col-md-12" align="center"><h2><span>Order List</span></h2> </div>
+  </div>
 </section>
 
 <section id = "table-section">
@@ -186,8 +192,43 @@
 </div>
 
 
+<div class="modal fade" id="user-update-modal" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered " role="document">
+    <div class="modal-content" >
+      <div class="modal-header">
+        <h3 class="modal-title" id="exampleModalLabel">Change Admin Info</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="userForm" name="userForm" class="form-horizontal" action="/admin/update" method="POST">
+          @csrf
+            <div class="row">
+              <div class="col-md-12 mb-3">
+                <label >New User Name:</label>
+                <input  type="text" class="form-control" id = "username" name="username" placeholder="" required>
+              </div>
+              <div class="col-md-12 mb-3">
+                <label >New Password:</label>
+                <input type="password" class="form-control" id = "password" name="password"   required>
+              </div>
+              <div class="col-md-12 mb-3" hidden>
+                <label >Confirm Password:</label>
+                <input type="password" class="form-control" id = "confirmpassword" name="confirmpassword"   required>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary btn-block" >Change</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
 
+</div> 
+<!-- End of Contents -->
 
 <script>
  var SITEURL = '{{URL::to('/')}}';

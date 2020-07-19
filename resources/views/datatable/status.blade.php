@@ -34,9 +34,10 @@
 			break;
 	}
 	?>
-<div class="btn-group dropdown col-md-12">
-	<button type="button" class="btn btn-{{$attr}}">{{$str}}</button>
-	<button type="button" class="btn btn-{{$attr}} dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" width="30px;">
+
+<div class="btn-group dropdown  col-md-12">
+	<button type="button" class="btn btn-block btn-{{$attr}}">{{$str}}</button>
+	<button type="button" class="btn btn-{{$attr}} dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" width="100px;">
 		<span class="sr-only">Toggle Dropdown</span>
 	</button>
 	<div class="dropdown-menu">

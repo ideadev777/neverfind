@@ -35,6 +35,7 @@ Route::group(['middleware' => ['admin']], function () {
 	Route::get('product-list/sendinvoice/{id}', 'ProductController@sendInvoice');
 	Route::get('/admin/orderlist', 'AdminController@orderlist');
 	Route::get('/order/delete/{id}','OrderController@delete');
+	Route::post('/admin/update','AdminController@postUpdateAdmin') ;
 });
 
 

@@ -39,7 +39,7 @@ class OrderController extends BaseController
 		$new_order->status = '0' ;
 		$new_order->email = $req->input('email') ;
 		$new_order->address = $req->input('address') ;
-		$new_order->mobile_number = $req->input('mobile-number')  ;
+		$new_order->mobile_number = $req->input('mobilenumber')  ;
 		$new_order->pay_email = $req->input('pay-email')  ;
 		$new_order->start_date = Carbon::parse($req->input('startDay')) ;
 		$new_order->end_date = Carbon::parse($req->input('endDay')) ;
