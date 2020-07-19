@@ -213,10 +213,12 @@
                 <label >New Password:</label>
                 <input type="password" class="form-control" id = "password" name="password"   required>
               </div>
+              <!--
               <div class="col-md-12 mb-3" hidden>
                 <label >Confirm Password:</label>
                 <input type="password" class="form-control" id = "confirmpassword" name="confirmpassword"   required>
               </div>
+            -->
             </div>
             <div class="modal-footer">
               <button type="submit" class="btn btn-primary btn-block" >Change</button>
