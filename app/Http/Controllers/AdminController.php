@@ -11,6 +11,7 @@ use App\Order;
 use DB;
 use Illuminate\Http\Request;
 use App\User ;
+use App\Service ;
 use Hash ;
 use Auth ;
 class AdminController extends BaseController
@@ -43,6 +44,33 @@ class AdminController extends BaseController
 	      	]
 	      );
 	}
+	public function postEditService(Request $req)
+	{
+		$validatedData = ([
+            'name' => $req->name,
+            'summary' => $req->summary,
+            'detail' => $req->detail,
+            'image_path' => $req->image_path,
+            'price' => $req->price,
+        ]);
+        Service::whereId($req->id)->update($validatedData);
+        return redirect()->back() ;
+	}
+
+	public function postAddService(Request $req)
+	{
+		Service::create(
+			[
+	  	        'name' => $req->name,
+	            'summary' => $req->summary,
+	            'detail' => $req->detail,
+	            'image_path' => $req->image_path,
+	            'price' => $req->price
+  	      	]
+	      );		
+        return redirect()->back() ;
+	}
+
 	public function postUpdateAdmin( Request $req ) 
 	{
 		$validatedData = ([
@@ -61,6 +89,13 @@ class AdminController extends BaseController
 			return redirect("/admin/orderlist") ;
         }
 		else return redirect()->back()->with('error', 1 );
+	}
+	public function servicelist()
+	{
+		$services = DB::select('select * from service' );
+	 	return view('admin_servicelist', [
+	 		'services' => $services
+	 	]);
 	}
 	public function orderlist()
 	{

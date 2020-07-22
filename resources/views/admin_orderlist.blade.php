@@ -54,6 +54,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav">
         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/admin/orderlist">Order List</a></li>
+        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/admin/servicelist">Service List</a></li>
         <li class="nav-item"><a href="#" class="nav-link js-scroll-trigger" data-toggle="modal" data-target="#user-update-modal">Change Admin Info</a></li>
         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/admin/logout">Log out</a></li>
       </ul>

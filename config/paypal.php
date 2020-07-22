@@ -5,7 +5,8 @@
  */
 
 return [
-    'mode'    => env('PAYPAL_MODE', 'sandbox'), // Can only be 'sandbox' Or 'live'. If empty or invalid, 'live' will be used.
+    'client_id'     => env('PAYPAL_CLIENT_ID', ''),
+    'secret'        => env('PAYPAL_SECRET', ''),
     'sandbox' => [
         'username'    => env('PAYPAL_SANDBOX_API_USERNAME', ''),
         'password'    => env('PAYPAL_SANDBOX_API_PASSWORD', ''),
@@ -21,10 +22,17 @@ return [
         'app_id'      => '', // Used for Adaptive Payments API
     ],
 
-    'payment_action' => 'Sale', // Can only be 'Sale', 'Authorization' or 'Order'
-    'currency'       => env('PAYPAL_CURRENCY', 'USD'),
-    'billing_type'   => 'MerchantInitiatedBilling',
-    'notify_url'     => '', // Change this accordingly for your application.
-    'locale'         => '', // force gateway language  i.e. it_IT, es_ES, en_US ... (for express checkout only)
-    'validate_ssl'   => true, // Validate SSL when creating api client.
+    'settings' => [
+        'mode'           => env('PAYPAL_MODE', 'sandbox'), // Can only be 'sandbox' Or 'live'. If empty or invalid, 'live' will be used.
+        'payment_action' => 'Sale', // Can only be 'Sale', 'Authorization' or 'Order'
+        'currency'       => env('PAYPAL_CURRENCY', 'USD'),
+        'billing_type'   => 'MerchantInitiatedBilling',
+        'notify_url'     => '', // Change this accordingly for your application.
+        'locale'         => '', // force gateway language  i.e. it_IT, es_ES, en_US ... (for express checkout only)
+        'validate_ssl'   => true, // Validate SSL when creating api client.
+        'http.ConnectionTimeOut'    => 30,
+        'log.LogEnabled'            => true,
+        'log.FileName'              => storage_path() . '/logs/paypal.log',
+        'log.LogLevel'              => 'ERROR'
+    ]
 ];
