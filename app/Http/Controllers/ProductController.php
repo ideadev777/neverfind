@@ -2,14 +2,25 @@
   
 namespace App\Http\Controllers;
 
+use PayPal\Api\Address;
 use PayPal\Api\Amount;
+use PayPal\Api\BillingInfo;
+use PayPal\Api\Cost;
+use PayPal\Api\Currency;
+use PayPal\Api\Invoice;
+use PayPal\Api\InvoiceAddress;
+use PayPal\Api\InvoiceItem;
+use PayPal\Api\MerchantInfo;
+use PayPal\Api\PaymentTerm;
+use PayPal\Api\Phone;
+use PayPal\Api\Payer;
+use PayPal\Api\Payment;
+use PayPal\Api\PaymentExecution;
+use PayPal\Api\ShippingInfo;
 use PayPal\Api\Item;
 use PayPal\Api\WebProfile;
 use PayPal\Api\ItemList;
 use PayPal\Api\InputFields;
-use PayPal\Api\Payer;
-use PayPal\Api\Payment;
-use PayPal\Api\PaymentExecution;
 use PayPal\Api\RedirectUrls;
 use PayPal\Api\Transaction;
 use PayPal\Auth\OAuthTokenCredential;
@@ -28,16 +39,29 @@ use Session;
 class ProductController extends Controller
 {
     private $apiContext;
+    private $merchantInfo = [
+        'Email' => "sb-woori2690280@business.example.com",
+        'FirstName' => "Tom",
+        'LastName' => "Clean",
+        'BusinessName' => "Tom Clean Servicies, LLC",
+        'CountryPhoneCode' => "001",
+        'NationalNumber' => "5032141716",
+        'Line1' => "1234 Main St.",
+        'City' => "Portland",
+        'State' => "OR", 
+        'PostalCode' => "97217",
+        'CountryCode' => "US",
+        'BillingEmail' => "sb-1ogav2680859@personal.example.com"
+    ];
 
     public function __construct()
     {
-        # Main configuration in constructor
         $paypalConfig = Config::get('paypal');
 
         $this->apiContext = new ApiContext(new OAuthTokenCredential(
                 $paypalConfig['client_id'],
-                $paypalConfig['secret'])
-        );
+                $paypalConfig['secret']
+        ));
 
         $this->apiContext->setConfig($paypalConfig['settings']);
     }
@@ -97,154 +121,106 @@ class ProductController extends Controller
         return Response::json($product);
     }
 
-    /*public function sendInvoice($id)
-    {
-        $affected = DB::table('orders')
-                  ->where('id', $id)
-                  ->update(['status' => 3]);
-        return Response::json($affected);
-    }*/
-
     public function sendInvoice($id)
     {
-        # We initialize the payer object and set the payment method to PayPal
-        $payer = new Payer();
-        $payer->setPaymentMethod('paypal');
+        $order = Order::with('service')->where('id', $id)->first();       
 
-        # We insert a new order in the order table with the 'initialised' status
-        $order = Order::with('service')->where('id', $id)->first();
+        $invoice = new Invoice();
+        $invoice
+            ->setMerchantInfo(new MerchantInfo())
+            ->setBillingInfo(array(new BillingInfo()))
+            ->setNote("Tom Clean Service Invoice")
+            ->setPaymentTerm(new PaymentTerm())
+            ->setShippingInfo(new ShippingInfo());
 
-        # We need to update the order if the payment is complete, so we save it to the session
-        //Session::put('orderId', $order->getKey());
+        $invoice->getMerchantInfo()
+            ->setEmail($this->merchantInfo['Email'])
+            ->setFirstName($this->merchantInfo['FirstName'])
+            ->setLastName($this->merchantInfo['LastName'])
+            ->setbusinessName($this->merchantInfo['BusinessName'])
+            ->setPhone(new Phone())
+            ->setAddress(new Address());
 
-        # We get all the items from the cart and parse the array into the Item object
-        $items = [];
-        $items[] = (new Item())
+        $invoice->getMerchantInfo()->getPhone()
+            ->setCountryCode($this->merchantInfo['CountryPhoneCode'])
+            ->setNationalNumber($this->merchantInfo['NationalNumber']);
+
+        $invoice->getMerchantInfo()->getAddress()
+            ->setLine1($this->merchantInfo['Line1'])
+            ->setCity($this->merchantInfo['City'])
+            ->setState($this->merchantInfo['State'])
+            ->setPostalCode($this->merchantInfo['PostalCode'])
+            ->setCountryCode($this->merchantInfo['CountryCode']);
+
+        $billing = $invoice->getBillingInfo();
+        $billing[0]
+            ->setEmail($order->pay_email);
+
+        $billing[0]->setBusinessName($this->merchantInfo['BusinessName'])
+            ->setAdditionalInfo("This is the Tom Clean billing Info")
+            ->setAddress(new InvoiceAddress());
+
+        $billing[0]->getAddress()
+            ->setLine1($this->merchantInfo['Line1'])
+            ->setCity($this->merchantInfo['City'])
+            ->setState($this->merchantInfo['State'])
+            ->setPostalCode($this->merchantInfo['PostalCode'])
+            ->setCountryCode($this->merchantInfo['CountryCode']);
+
+        $items = array();
+        $items[0] = new InvoiceItem();
+        $items[0]
             ->setName($order->service->name)
-            ->setCurrency('USD')
             ->setQuantity(1)
-            ->setPrice($order->service->price);
+            ->setUnitPrice(new Currency());
 
-        # We create a new item list and assign the items to it
-        $itemList = new ItemList();
-        $itemList->setItems($items);
+        $items[0]->getUnitPrice()
+            ->setCurrency("USD")
+            ->setValue($order->service->price);
 
-        # Disable all irrelevant PayPal aspects in payment
-        $inputFields = new InputFields();
-        $inputFields->setAllowNote(true)
-            ->setNoShipping(1)
-            ->setAddressOverride(0);
+        $invoice->setItems($items);        
 
-        $webProfile = new WebProfile();
-        $webProfile->setName(uniqid())
-            ->setInputFields($inputFields)
-            ->setTemporary(true);
+        $cost = new Cost();
+        $cost->setPercent("2");
+        $invoice->setDiscount($cost);
 
-        $createProfile = $webProfile->create($this->apiContext);
+        $invoice->getPaymentTerm()
+            ->setTermType("NET_45");
 
-        # We get the total price of the cart
-        $amount = new Amount();
-        $amount->setCurrency('USD')
-            ->setTotal($order->service->price);
+        $invoice->getShippingInfo()
+            ->setFirstName("Sally")
+            ->setLastName("Patient")
+            ->setBusinessName("Not applicable")
+            ->setPhone(new Phone())
+            ->setAddress(new InvoiceAddress());
 
-        $transaction = new Transaction();
-        $transaction->setAmount($amount);
-        $transaction->setItemList($itemList)
-            ->setDescription('Your transaction description');
+        $invoice->getShippingInfo()->getPhone()
+            ->setCountryCode("001")
+            ->setNationalNumber("5039871234");
 
-        $redirectURLs = new RedirectUrls();
-        $redirectURLs->setReturnUrl(URL::to('status'))
-            ->setCancelUrl(URL::to('status'));
+        $invoice->getShippingInfo()->getAddress()
+            ->setLine1($this->merchantInfo['Line1'])
+            ->setCity($this->merchantInfo['City'])
+            ->setState($this->merchantInfo['State'])
+            ->setPostalCode($this->merchantInfo['PostalCode'])
+            ->setCountryCode($this->merchantInfo['CountryCode']);
 
-        $payment = new Payment();
-        $payment->setIntent('Sale')
-            ->setPayer($payer)
-            ->setRedirectUrls($redirectURLs)
-            ->setTransactions(array($transaction));
-        $payment->setExperienceProfileId($createProfile->getId());
-        $payment->create($this->apiContext);
+        $invoice->setLogoUrl('https://www.paypalobjects.com/webstatic/i/logo/rebrand/ppcom.svg');
 
-        foreach ($payment->getLinks() as $link) {
-            if ($link->getRel() == 'approval_url') {
-                $redirectURL = $link->getHref();
-                break;
-            }
+        $request = clone $invoice;
+
+        try {
+            $invoice->create($this->apiContext);
+            $sendStatus = $invoice->send($this->apiContext);
+            $affected = DB::table('orders')
+                  ->where('id', $id)
+                  ->update(['status' => 3]);
+            return Response::json($affected);
+            
+        } catch (Exception $ex) {
+            return Response::json(['status' => 'failed']);
         }
 
-        # We store the payment ID into the session
-        Session::put('paypalPaymentId', $payment->getId());
-
-        if (isset($redirectURL)) {
-            return Redirect::away($redirectURL);
-        }
-
-        Session::put('error', 'There was a problem processing your payment. Please contact support.');
-
-        return Redirect::to('/home');
-    }
-
-    public function getPaymentStatus()
-    {
-        $paymentId = Session::get('paypalPaymentId');
-        $orderId = Session::get('orderId');
-
-        # We now erase the payment ID from the session to avoid fraud
-        Session::forget('paypalPaymentId');
-
-        # If the payer ID or token isn't set, there was a corrupt response and instantly abort
-        if (empty(Request::get('PayerID')) || empty(Request::get('token'))) {
-            Session::put('error', 'There was a problem processing your payment. Please contact support.');
-            return Redirect::to('/home');
-        }
-
-        $payment = Payment::get($paymentId, $this->apiContext);
-        $execution = new PaymentExecution();
-        $execution->setPayerId(Request::get('PayerID'));
-
-        $result = $payment->execute($execution, $this->apiContext);
-
-        # Payment is processing but may still fail due e.g to insufficient funds
-        $order = Order::find($orderId);
-        $order->status = 'processing';
-
-        if ($result->getState() == 'approved') {
-
-            $invoice = new Invoice();
-            $invoice->price = $result->transactions[0]->getAmount()->getTotal();
-            $invoice->currency = $result->transactions[0]->getAmount()->getCurrency();
-            $invoice->customer_email = $result->getPayer()->getPayerInfo()->getEmail();
-            $invoice->customer_id = $result->getPayer()->getPayerInfo()->getPayerId();
-            $invoice->country_code = $result->getPayer()->getPayerInfo()->getCountryCode();
-            $invoice->payment_id = $result->getId();
-
-            # We update the invoice status
-            $invoice->payment_status = 'approved';
-            $invoice->save();
-
-            # We also update the order status
-            $order->invoice_id = $invoice->getKey();
-            $order->status = 'pending';
-            $order->save();
-
-            # We insert the suborder (products) into the table
-            foreach (Cart::content() as $item) {
-                $suborder = new Suborder();
-                $suborder->order_id = $orderId;
-                $suborder->product_id = $item->id;
-                $suborder->price = $item->price;
-                $suborder->quantity = $item->qty;
-                $suborder->save();
-            }
-
-            Cart::destroy();
-
-            Session::put('success', 'Your payment was successful. Thank you.');
-
-            return Redirect::to('/home');
-        }
-
-        Session::put('error', 'There was a problem processing your payment. Please contact support.');
-
-        return Redirect::to('/home');
+        
     }
 }

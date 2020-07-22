@@ -10,6 +10,6 @@ class Service extends Model
     protected $table = 'service';
 
     protected $fillable = [
-        'name', 'summary', 'detail','image_path','price'
+        'name', 'summary', 'detail','image_path','price','rank'
     ];
 }

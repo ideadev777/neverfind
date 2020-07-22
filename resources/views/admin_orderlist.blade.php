@@ -331,15 +331,18 @@
         var product_id = $(this).data("id");
         
         if(confirm("Are you sure want to send invoice ?")){
+          $('#loadingModal').modal('show');
           $.ajax({
               type: "get",
               url: SITEURL + "/product-list/sendinvoice/"+product_id,
               success: function (data) {
               var oTable = $('#laravel_datatable').dataTable(); 
               oTable.fnDraw(false);
+              $('#loadingModal').modal('hide');
               },
               error: function (data) {
                   console.log('Error:', data);
+                  $('#loadingModal').modal('hide');
               }
           });
         }

@@ -15,7 +15,7 @@ class ServiceController extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 	public function index()
 	{
-		$services = DB::select('select * from service' );
+		$services = DB::select('select * from service order by rank ' );
 	 	return view('service', [
 			'bgImg' => [ ["service_1","Picture_1"], ["service_2","Picture_2"]],
 	 		'services' => $services

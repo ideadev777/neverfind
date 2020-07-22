@@ -39,6 +39,7 @@ Route::group(['middleware' => ['admin']], function () {
 	Route::post('/admin/update','AdminController@postUpdateAdmin') ;
 	Route::post('/admin/editservice','AdminController@postEditService') ;
 	Route::post('/admin/addservice','AdminController@postAddService') ;
+	Route::post('/admin/deleteservice','AdminController@postDeleteService') ;
 	
 
 });

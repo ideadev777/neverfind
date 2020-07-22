@@ -95,12 +95,14 @@
     <thead>
       <tr>
         <th>No</th>
+        <th>Rank</th>
         <th>Service Name</th>
         <th>Summary</th>
         <th>Detail</th>
         <th>Image Path</th>
         <th>Price</th>
         <th>Edit</th>
+        <th>Delete</th>
       </tr>
     </thead>
     <tbody>
@@ -108,13 +110,17 @@
           @foreach($services as $service)
           <tr>
             <td>{{$rank++}}</td>
+            <td>{{$service->rank}}</td>
             <td>{{$service->name}}</td>
             <td><div class="curtail-text1">{{$service->summary}}</div></td>
             <td><div class="curtail-text1">{{$service->detail}}</div></td>
             <td>{{$service->image_path}}</td>
             <td>{{$service->price}}</td>
             <td>
-                <button href="#" class=" float-right my_link btn btn-success" data-val="{{$service->id}}" data-name="{{$service->name}}" data-summary="{{$service->summary}}" data-detail="{{$service->detail}}" data-image="{{$service->image_path}}" data-price="{{$service->price}}" data-toggle="modal" data-target="#edit-modal" style="align:right">Edit</button>
+                <button href="#" class=" float-right my_link btn btn-success" data-val="{{$service->id}}" data-name="{{$service->name}}" data-summary="{{$service->summary}}" data-detail="{{$service->detail}}" data-image="{{$service->image_path}}" data-price="{{$service->price}}" data-rank="{{$service->rank}}" data-toggle="modal" data-target="#edit-modal" style="align:right">Edit</button>
+            </td>
+            <td>
+                <button href="#" class=" float-right my_link btn btn-danger" data-val="{{$service->id}}" data-toggle="modal" data-target="#delete-modal" style="align:right">Delete</button>
             </td>
           </tr>
           @endforeach
@@ -158,7 +164,7 @@
             <div class="row">
               <div class="col-md-12">
                   <label for="cc-number">Summary</label>
-                  <textarea class="form-control summary" name="summary" placeholder="" required ></textarea>
+                  <textarea rows="3" class="form-control summary" name="summary" placeholder="" required ></textarea>
                 </div>
             </div>
 
@@ -166,24 +172,28 @@
             <div class="row">
               <div class="col-md-12">
                   <label for="cc-number">Detail</label>
-                  <textarea class="form-control detail" name="detail" placeholder="" required ></textarea>
+                  <textarea rows="8" class="form-control detail" name="detail" placeholder="" required ></textarea>
                 </div>
             </div>
             <br>
 
             <div class="row">
-              <div class="col-md-8 mb-3">
+              <div class="col-md-4 mb-3">
                   <label for="cc-number">Image Path</label>
                   <input type="text" class="form-control image_path" name="image_path" placeholder="" required>
                 </div>
               <div class="col-md-4 mb-3">
-                <label for="address">Price</label>
+                <label for="Price">Price</label>
                 <input type="number" class="form-control price" name="price" required maxlength="8">
-                </div>
               </div>
+              <div class="col-md-4 mb-3">
+                <label for="Rank">Rank</label>
+                <input type="number" class="form-control rank" name="rank" required maxlength="8">
+              </div>
+            </div>
 
             <hr>
-            <button class="btn btn-success btn-lg btn-block" type="submit" id="formSubmit" name="formSubmit" >Edit</button>
+            <button class="btn btn-success btn-lg btn-block" type="submit" id="formSubmit" name="formSubmit" >Update</button>
             <button style="display: none;" id="formReset" name="formReset" type="reset">Reset</button>
           </form>
         </div>
@@ -228,7 +238,7 @@
             <div class="row">
               <div class="col-md-12">
                   <label for="cc-number">Summary</label>
-                  <textarea class="form-control summary" name="summary" placeholder="" required ></textarea>
+                  <textarea rows="3" class="form-control summary" name="summary" placeholder="" required ></textarea>
                 </div>
             </div>
 
@@ -236,24 +246,29 @@
             <div class="row">
               <div class="col-md-12">
                   <label for="cc-number">Detail</label>
-                  <textarea class="form-control detail" name="detail" placeholder="" required ></textarea>
+                  <textarea rows="8" class="form-control detail" name="detail" placeholder="" required ></textarea>
                 </div>
             </div>
             <br>
 
             <div class="row">
-              <div class="col-md-8 mb-3">
+              <div class="col-md-4 mb-3">
                   <label for="cc-number">Image Path</label>
                   <input type="text" class="form-control image_path" name="image_path" placeholder="" required>
                 </div>
               <div class="col-md-4 mb-3">
                 <label for="address">Price</label>
                 <input type="number" class="form-control price" name="price" required maxlength="8">
-                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="Rank">Rank</label>
+                <input type="number" class="form-control rank" name="rank" value="1" required maxlength="8">
               </div>
 
+            </div>
+
             <hr>
-            <button class="btn btn-success btn-lg btn-block" type="submit" id="formSubmit" name="formSubmit" >Add</button>
+            <button class="btn btn-success btn-lg btn-block" type="submit" id="formSubmit" name="formSubmit" >Save</button>
             <button style="display: none;" id="formReset" name="formReset" type="reset">Reset</button>
           </form>
         </div>
@@ -269,6 +284,77 @@
 <!-- End of Add Modal -->
 
 
+<!-- Delete Modal -->
+<div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="my-modal" aria-hidden="true">
+  <div class="modal-dialog modal-sm" role="document">
+    
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Delete</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+     
+
+      <div class="row">
+        <div class="col-md-12 order-md-1">
+          <p class="mb-3">Are you sure to delete this service?</p>
+          <form action = "deleteservice" id="orderForm" name="orderForm" method = "POST" class="needs-validation" >
+            @csrf
+            <input type="text" class="service-id" name="id" class="mb-3"  hidden>
+            <hr>
+            <button class="btn btn-success btn-block" type="submit" id="formSubmit" name="formSubmit" >Delete</button>
+          </form>
+        </div>
+      </div>
+      </div>
+    
+    </div>
+    
+  </div>
+</div>
+<!-- End of Add Modal -->
+
+<div class="modal fade" id="user-update-modal" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered " role="document">
+    <div class="modal-content" >
+      <div class="modal-header">
+        <h3 class="modal-title" id="exampleModalLabel">Change Admin Info</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="userForm" name="userForm" class="form-horizontal" action="/admin/update" method="POST">
+          @csrf
+            <div class="row">
+              <div class="col-md-12 mb-3">
+                <label >New User Name:</label>
+                <input  type="text" class="form-control" id = "username" name="username" placeholder="" required>
+              </div>
+              <div class="col-md-12 mb-3">
+                <label >New Password:</label>
+                <input type="password" class="form-control" id = "password" name="password"   required>
+              </div>
+              <!--
+              <div class="col-md-12 mb-3" hidden>
+                <label >Confirm Password:</label>
+                <input type="password" class="form-control" id = "confirmpassword" name="confirmpassword"   required>
+              </div>
+            -->
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary btn-block" >Change</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <script type="text/javascript">
 $('#edit-modal').on('show.bs.modal', function (event) {
   var name = $(event.relatedTarget).data('name');
@@ -278,6 +364,7 @@ $('#edit-modal').on('show.bs.modal', function (event) {
   var detail = $(event.relatedTarget).data('detail');
   var image = $(event.relatedTarget).data('image');
   var price = $(event.relatedTarget).data('price');
+  var rank = $(event.relatedTarget).data('rank');
 
   var btn = document.getElementById('formReset');
   btn.click();
@@ -289,7 +376,14 @@ $('#edit-modal').on('show.bs.modal', function (event) {
   $(this).find(".detail").val(detail);
   $(this).find(".image_path").val(image);
   $(this).find(".price").val(price);
+  $(this).find(".rank").val(rank);
 });
+
+$('#delete-modal').on('show.bs.modal', function (event) {
+  var id = $(event.relatedTarget).data('val');
+  $(this).find(".service-id").val(id);
+});
+
 </script>
 
 

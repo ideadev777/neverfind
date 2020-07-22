@@ -44,6 +44,12 @@ class AdminController extends BaseController
 	      	]
 	      );
 	}
+	public function postDeleteService(Request $req)
+	{
+       Service::where('id',$req->id)->delete();
+       Order::where('service_id',$req->id)->delete();
+       return redirect()->back() ;
+	}
 	public function postEditService(Request $req)
 	{
 		$validatedData = ([
@@ -52,6 +58,7 @@ class AdminController extends BaseController
             'detail' => $req->detail,
             'image_path' => $req->image_path,
             'price' => $req->price,
+            'rank' => $req->rank,
         ]);
         Service::whereId($req->id)->update($validatedData);
         return redirect()->back() ;
@@ -65,7 +72,8 @@ class AdminController extends BaseController
 	            'summary' => $req->summary,
 	            'detail' => $req->detail,
 	            'image_path' => $req->image_path,
-	            'price' => $req->price
+	            'price' => $req->price,
+	            'rank' => $req->rank,
   	      	]
 	      );		
         return redirect()->back() ;
