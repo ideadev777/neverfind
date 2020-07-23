@@ -20,7 +20,9 @@ class CreateServicesTable extends Migration
             $table->string('detail');
             $table->string('image_path');
             $table->smallInteger('price');
-            $table->timestamps();
+            $table->smallInteger('rank');
+            $table->smallInteger('price');
+            $table->timestamps('ishome');
         });
     }
 

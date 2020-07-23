@@ -105,6 +105,16 @@ class AdminController extends BaseController
 	 		'services' => $services
 	 	]);
 	}
+	public function changeIsHomeState($id)
+	{
+		$service = DB::select('select * from service where id='.$id);
+		$validatedData = ([
+            'ishome' => ($service[0]->ishome==1?0:1),
+        ]);
+        Service::whereId($id)->update($validatedData);
+        return redirect()->back() ;
+	}
+
 	public function orderlist()
 	{
 	 	return view('admin_orderlist');

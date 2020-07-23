@@ -95,13 +95,13 @@
     <thead>
       <tr>
         <th>No</th>
-        <th>Rank</th>
         <th>Service Name</th>
         <th>Summary</th>
         <th>Detail</th>
         <th>Image Path</th>
         <th>Price</th>
         <th>Edit</th>
+        <th>Show in Home</th>
         <th>Delete</th>
       </tr>
     </thead>
@@ -110,14 +110,24 @@
           @foreach($services as $service)
           <tr>
             <td>{{$rank++}}</td>
-            <td>{{$service->rank}}</td>
             <td>{{$service->name}}</td>
             <td><div class="curtail-text1">{{$service->summary}}</div></td>
             <td><div class="curtail-text1">{{$service->detail}}</div></td>
             <td>{{$service->image_path}}</td>
             <td>{{$service->price}}</td>
             <td>
-                <button href="#" class=" float-right my_link btn btn-success" data-val="{{$service->id}}" data-name="{{$service->name}}" data-summary="{{$service->summary}}" data-detail="{{$service->detail}}" data-image="{{$service->image_path}}" data-price="{{$service->price}}" data-rank="{{$service->rank}}" data-toggle="modal" data-target="#edit-modal" style="align:right">Edit</button>
+                <button href="#" class=" col-md-12 float-right my_link btn btn-success" data-val="{{$service->id}}" data-name="{{$service->name}}" data-summary="{{$service->summary}}" data-detail="{{$service->detail}}" data-image="{{$service->image_path}}" data-price="{{$service->price}}" data-rank="{{$service->rank}}" data-toggle="modal" data-target="#edit-modal" style="align:right">Edit</button>
+            </td>
+            <td>
+              <div class="form-check">     
+                  <input 
+                  type="checkbox" class="col-md-12 form-check-input" value=""
+                  @if($service->ishome==1)
+                  checked
+                  @endif
+                  onclick="window.location.href='/admin/showinhome/{{$service->id}}'" 
+                  >
+              </div>
             </td>
             <td>
                 <button href="#" class=" float-right my_link btn btn-danger" data-val="{{$service->id}}" data-toggle="modal" data-target="#delete-modal" style="align:right">Delete</button>

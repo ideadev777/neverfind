@@ -15,7 +15,7 @@ class HomeController extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 	public function index()
 	{
-		$services = DB::select("select * from service  order by rank asc limit 0,3 " );
+		$services = DB::select("select * from service where ishome = 1 " );
 	 	return view('welcome', 
 	 		[
 	 			'bgImg' => [ ["home_1","YOUR PERSONALISED HOME CONCIERGE"], ["home_2","EXPERIENCE AN UNRIVALLED HOSPITALITY SERVICE"], ["home_3","HAPPINESS IS HOME-MADE"]] ,
